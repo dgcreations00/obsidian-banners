@@ -27,7 +27,7 @@ export const registerEditorBannerEvents = () => {
     'defaultHeaderValue'
   ], () => {
     iterateMarkdownLeaves((leaf) => {
-      leaf.view.editor.cm.dispatch({ effects: refreshEffect.of(null) });
+      leaf.view?.editor?.cm.dispatch({ effects: refreshEffect.of(null) });
     }, 'editing');
   });
 
@@ -42,7 +42,7 @@ export const registerEditorBannerEvents = () => {
           const effects = mode === 'source'
             ? openNoteEffect.of(null)
             : removeBannerEffect.of(null);
-          view.editor.cm.dispatch({ effects });
+          view.editor?.cm.dispatch({ effects });
         } else if (leafBannerMap[id]) {
           // When switching to a view where the editor isn't available, remove the banner manually
           destroyBanner(id);

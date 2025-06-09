@@ -2,7 +2,8 @@ import { requestUrl } from 'obsidian';
 import { IMAGE_EXTENSIONS } from 'src/bannerData';
 import { plug } from 'src/main';
 
-const FILE_REGEX = /^\[\[.+\]\]/;
+const FILE_REGEX = /^\[\[.+\]\]$/;
+const HTTP_URL_REGEX = /^https?:\/\//;
 const imageCache: Record<string, string> = {};
 
 const getInternalImage = (link: string, currentPath: string) => {
@@ -41,14 +42,46 @@ const getRemoteImage = async (src: string) => {
   }
 };
 
-export const fetchImage = async (src: string, currentPath: string): Promise<string | null> => {
-  // Check the image cache first
+
+
+export const fetchImage = async (src: any, currentPath: string): Promise<string | null> => {
+  if (
+    Array.isArray(src) &&
+        src.length === 1 &&
+        Array.isArray(src[0]) &&
+        src[0].length === 1 &&
+        typeof src[0][0] === 'string'
+  ) {
+    src = `[[${src[0][0]}]]`;
+  }
+
+  if (typeof src !== 'string' || !src) {
+    return null;
+  }
+
   if (imageCache[src]) return imageCache[src];
 
   if (FILE_REGEX.test(src)) {
     return getInternalImage(src, currentPath);
-  } else {
+  }
+
+  if (HTTP_URL_REGEX.test(src)) {
     return getRemoteImage(src);
+  }
+
+  try {
+    const file = plug.app.metadataCache.getFirstLinkpathDest(src, currentPath);
+    if (!file) {
+      throw new Error(`File not found for banner: ${src}`);
+    } else if (!IMAGE_EXTENSIONS.includes(file.extension)) {
+      throw new Error(`${file.name} is not an image!`);
+    }
+    const resourcePath = plug.app.vault.getResourcePath(file);
+    imageCache[src] = resourcePath;
+    return resourcePath;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 };
 

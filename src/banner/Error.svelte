@@ -13,21 +13,21 @@
 </div>
 
 <style lang="scss">
-  @import './mixins.scss';
+	@use './mixins.scss';
 
-  .wrapper {
-    @include info-box-wrapper;
+	.wrapper {
+	@include mixins.info-box-wrapper;
 
-    :global(.obsidian-banner-wrapper) & { height: var(--banners-height); }
-    :global(.is-mobile .obsidian-banner-wrapper) & { height: var(--banners-mobile-height); }
-    :global(.obsidian-banner-wrapper.in-popover) & { height: var(--banners-popover-height); }
-    :global(.obsidian-banner-wrapper.in-internal-embed) & {
-      height: var(--banners-internal-embed-height);
-    }
-  }
-  .error {
-    @include info-box;
-    border-color: var(--background-modifier-error);
-    color: var(--text-error);
-  }
+	:global(.obsidian-banner-wrapper) & { height: var(--banners-height); }
+	:global(.is-mobile .obsidian-banner-wrapper) & { height: var(--banners-mobile-height); }
+	:global(.obsidian-banner-wrapper.in-popover) & { height: var(--banners-popover-height); }
+	:global(.obsidian-banner-wrapper.in-internal-embed) & {
+	height: var(--banners-internal-embed-height);
+	}
+	}
+	.error {
+	@include mixins.info-box;
+	border-color: var(--background-modifier-error);
+	color: var(--text-error);
+	}
 </style>
