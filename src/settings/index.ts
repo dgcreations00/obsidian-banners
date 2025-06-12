@@ -10,7 +10,7 @@ export const saveSettings = async (changed: Partial<BannerSettings> = {}) => {
   await plug.saveData(plug.settings);
   rawSettings.set(plug.settings);
   plug.events.trigger('setting-change', changed);
-  console.log(plug.settings);
+  //console.log(plug.settings);
 };
 
 export const loadSettings = async () => {

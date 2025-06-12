@@ -41,7 +41,7 @@ const bannerExtender = EditorState.transactionExtender.of((transaction) => {
   if (leaf === undefined) return null;
 
   if (hasEffect(effects, openNoteEffect)) {
-    console.log('open note!');
+    //console.log('open note!');
     const newEffects = [];
     if (hasBanner(leaf.id)) newEffects.push(assignBannerEffect.of(null));
     newEffects.push(getEffectFromData(state));
